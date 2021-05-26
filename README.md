@@ -26,7 +26,7 @@ msgstr ""
 xgettext extracts **ALL** the strings in a file, not just strings, which are used in a method that's used for translating as the first parameter
 
 ## Roadmap
-* [ ] Command line options 
+* [x] Command line options 
 * [ ] Add option for scanning directories
 * [x] Add option for extracting strings from attibutes
-* [ ] Add option for custom translation functions and attributes
+* [x] Add option for custom translation functions and attributes
