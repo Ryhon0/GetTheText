@@ -138,6 +138,13 @@ namespace GetTheText
 
 	public class TextPosition
 	{
+		public TextPosition(string input, int pos)
+		{
+			var lines = new string(input.Take(pos).ToArray()).Split('\n').ToList();
+
+			Line = lines.Count;
+			Position = lines.Last().Length + 1;
+		}
 		public TextPosition(int l, int p)
 		{
 			Line = l;
