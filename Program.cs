@@ -34,6 +34,24 @@ namespace GetTheText
 				foreach (var a in tree.DescendantNodes().OfType<InvocationExpressionSyntax>())
 				{
 					{
+						// Check method name
+						var n = a.ChildNodes().First();
+						if (n is MemberAccessExpressionSyntax ma)
+						{
+							var i = n.ChildNodes().OfType<IdentifierNameSyntax>().Last();
+
+							if(!TranslationMethods.Contains(i.ToString()))
+								continue;
+
+						}
+						else if (n is IdentifierNameSyntax)
+						{
+							if(!TranslationMethods.Contains(n.ToString()))
+								continue;
+						}
+						else continue;
+					}
+
 					var pos = new TextPosition(code, a.SpanStart);
 
 					// No arguments, skip
