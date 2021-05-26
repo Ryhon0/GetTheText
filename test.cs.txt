@@ -1,0 +1,14 @@
+public class Test
+{
+	[Description(0)]
+	[Description]
+	[Description("uwu")]
+	[Title("wdwa"), Description("the2")]
+	public void Start()
+	{
+		_();
+		var a = _("Test");
+		T._();
+		My.Project.Translation._("Test text");
+	}
+}
