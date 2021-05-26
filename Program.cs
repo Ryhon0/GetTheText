@@ -5,14 +5,39 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using CommandLine;
 
 namespace GetTheText
 {
 	class Program
 	{
+		public class Options
+		{
+			[Option('m', "methods", Required = false, HelpText = "List of translation method names, separated with colons.")]
+			public string Methods { get; set; }
+
+			[Option('a', "mttributes", Required = false, HelpText = "List of translation attribute names, separated with colons.")]
+			public string Attributes { get; set; }
+			[Value(0, HelpText = "Input files to be processed.", Required = true)]
+			public IEnumerable<string> Files { get; set; }
+		}
+
 		static void Main(string[] args)
 		{
-			foreach (var f in args)
+			string[] files = {};
+			var x = Parser.Default.ParseArguments<Options>(args)
+			.WithParsed<Options>(o =>
+			{
+				if (o.Methods != null)
+					TranslationMethods = o.Methods.Split(',');
+				if (o.Attributes != null)
+					TranslationAttributes = o.Attributes.Split(',');
+
+				files = o.Files.ToArray();
+			});
+
+
+			foreach (var f in files)
 			{
 				if (!File.Exists(f))
 				{
@@ -40,13 +65,13 @@ namespace GetTheText
 						{
 							var i = n.ChildNodes().OfType<IdentifierNameSyntax>().Last();
 
-							if(!TranslationMethods.Contains(i.ToString()))
+							if (!TranslationMethods.Contains(i.ToString()))
 								continue;
 
 						}
 						else if (n is IdentifierNameSyntax)
 						{
-							if(!TranslationMethods.Contains(n.ToString()))
+							if (!TranslationMethods.Contains(n.ToString()))
 								continue;
 						}
 						else continue;
