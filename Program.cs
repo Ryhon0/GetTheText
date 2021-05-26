@@ -30,6 +30,38 @@ namespace GetTheText
 
 				var tree = SyntaxFactory.ParseCompilationUnit(code);
 
+				// Invocations
+				foreach (var a in tree.DescendantNodes().OfType<InvocationExpressionSyntax>())
+				{
+					{
+					var pos = new TextPosition(code, a.SpanStart);
+
+					// No arguments, skip
+					if (a.ArgumentList?.Arguments.Any() != true)
+					{
+						WriteError(fullPath + pos + " => " + a);
+						WriteError("Translation method found but no arguments found");
+						WriteError();
+						continue;
+					}
+
+					// Get first argument
+					var str = a.ArgumentList.Arguments.First().ChildNodes().First();
+					if (str is LiteralExpressionSyntax && (str.IsKind(SyntaxKind.StringLiteralExpression)))
+					{
+						Console.WriteLine("# " + currentFile + pos);
+						Console.WriteLine("msgid " + (str.GetText()[0] == '@' ? str.ToString()[1..] : str.ToString()));
+						Console.WriteLine("msgstr \"\"");
+						Console.WriteLine();
+					}
+					else
+					{
+						WriteError(fullPath + pos + " => " + a);
+						WriteError("Translation method found but the first argument is not a stirng literal");
+						WriteError();
+					}
+				}
+
 
 		static string[] TranslationMethods = {
 			"Tr", // Godot
