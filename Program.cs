@@ -126,6 +126,16 @@ namespace GetTheText
 		{
 			"Description"
 		};
+
+		static void WriteError() => Console.Error.WriteLine();
+		static void WriteError(object o)
+		{
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.Error.WriteLine(o);
+			Console.ResetColor();
+		}
+	}
+
 	public class TextPosition
 	{
 		public TextPosition(int l, int p)
