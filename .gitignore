@@ -1,0 +1,6 @@
+.vscode
+obj/
+bin/
+
+*.pot
+*.po
